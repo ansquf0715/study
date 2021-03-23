@@ -1,38 +1,31 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
-typedef struct __Point
-{
-	int xpos;
-	int ypos;
-}Point;
-
-Point& PntAdder(const Point &p1, const Point &p2)
-{
-	Point *ans = new Point;
-	ans->xpos = p1.xpos + p2.xpos;
-	ans->ypos = p1.ypos + p2.ypos;
-
-	return *ans;
-}
-
 int main()
 {
-	Point *number1 = new Point;
-	number1->xpos = 3;
-	number1->ypos = 30;
+	char name[10];
+	char copy[30] = "Name is ";
 
-	Point *number2 = new Point;
-	number2->xpos = 70;
-	number2->ypos = 7;
+	cout << "Enter your name : ";
+	cin >> name;
 
-	Point &temp = PntAdder(*number1, *number2);
-	cout << " x: " << temp.xpos << " " << "y : " << temp.ypos << endl;
+	int length = 0;
+	length = strlen(name);
+	cout << "length : " << length << endl;
 
-	delete number1;
-	delete number2;
-	delete &temp;
+	cout << strcat(copy, name) << endl;
+
+	cout << copy << endl;
+
+	cout << strcpy(copy, name) << endl;
+
+	cout << copy << endl;
+
+	cout << strcmp(copy, name) << endl;
 
 	return 0;
 }
