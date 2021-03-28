@@ -4,84 +4,94 @@
 
 using namespace std;
 
-class FruitSeller
+class Point
 {
 private:
-	int APPLE_PRICE;
-	int numOfApples;
-	int myMoney;
+	int xpos, ypos;
 
 public:
-	void InitMembers(int price, int num, int money)
+	void Init(int x, int y)
 	{
-		APPLE_PRICE = price;
-		numOfApples = num;
-		myMoney = money;
+		xpos = x;
+		ypos = y;
 	}
 
-	int SaleApples(int money)
+	void ShowPointInfo() const
 	{
-		int num = money / APPLE_PRICE;
-		numOfApples -= num;
-		myMoney += money;
-		return num;
-	}
-
-	void ShowSalesResult() const
-	{
-		cout << "남은 사과 : " << numOfApples << endl;
-		cout << "판매 수익 : " << myMoney << endl;
+		cout << "[" << xpos << " , " << ypos << "]" << endl;
 	}
 };
 
-class FruitBuyer
+class Circle
 {
-	int myMoney;
-	int numOfApples;
-
+private:
+	Point circle_info;
+	int radius;
 public:
-	bool InitMembers(int money)
+	bool init(int x,int y, int radius_input)
 	{
-		if (money <= 0)
-		{
-			cout << "price error" << endl;
-			return false;
-		}
+		circle_info.Init(x, y);
+		if (radius_input > 0)
+			radius = radius_input;
 		else
+			return false;
+	}
+
+	void ShowRadiusInfo() const
+	{
+		cout << "radius : " << radius << endl;
+		circle_info.ShowPointInfo();
+	}
+
+	int inform_radius()
+	{
+		return radius;
+	}
+};
+
+class Ring
+{
+private:
+	Circle inner_circle;
+	Circle outer_circle;
+public:
+	void Init(int inX, int inY, int inR, int outX, int outY, int outR)
+	{
+		if (inR < outR)
 		{
-			myMoney = money;
-			numOfApples = 0;
+			inner_circle.init(inX, inY, inR);
+			outer_circle.init(outX, outY, outR);
+		}
+
+		if (inR > outR)
+		{
+			inner_circle.init(outX, outY, outR);
+			outer_circle.init(inX, inY, inR);
+		}
+
+		if (inR == outR)
+		{
+			inner_circle.init(inX, inY, inR);
+			outer_circle.init(outX, outY, outR);
 		}
 	}
 
-	void BuyApples(FruitSeller &seller, int money)
+	void ShowRingInfo() const
 	{
-		numOfApples += seller.SaleApples(money);
-		myMoney -= money;
-	}
+		cout << "Inner Circle Info..." << endl;
+		inner_circle.ShowRadiusInfo();
 
-	void ShowBuyResult() const
-	{
-		cout << "현재 잔액 : " << myMoney << endl;
-		cout << "사과 개수 : " << numOfApples << endl << endl;
+		cout << "Outer Circle Info..." << endl;
+		outer_circle.ShowRadiusInfo();
 	}
 };
 
 int main()
 {
-	FruitSeller seller;
-	seller.InitMembers(1000, 20, 0);
+	Ring ring;
+	ring.Init(1, 1, 4, 2, 2, 9);
 
-	FruitBuyer buyer;
-	buyer.InitMembers(5000);
-
-	buyer.BuyApples(seller, 2000);
-
-	cout << "과일 판매자의 현황" << endl;
-	seller.ShowSalesResult();
-
-	cout << "과일 구매자의 현황" << endl;
-	buyer.ShowBuyResult();
+	ring.ShowRingInfo();
 
 	return 0;
 }
